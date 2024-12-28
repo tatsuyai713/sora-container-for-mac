@@ -53,9 +53,9 @@ export FIREFOX_LOG=/tmp/firefox.log
 if [ -n "$(nvidia-smi --query-gpu=uuid --format=csv | sed -n 2p)" ]; then
   export VGL_DISPLAY="${VGL_DISPLAY:-egl}"
   export VGL_REFRESHRATE="$REFRESH"
-  vglrun +wm firefox --width 1920 --height 1080 "localhost" > "$FIREFOX_LOG" 2>&1 &
+  vglrun +wm firefox --kiosk --width 1920 --height 1080 "localhost" > "$FIREFOX_LOG" 2>&1 &
 else
-  firefox --width 1920 --height 1080 "localhost" > "$FIREFOX_LOG" 2>&1 &
+  firefox --kiosk --width 1920 --height 1080 "localhost" > "$FIREFOX_LOG" 2>&1 &
 fi
 
 # Optionally override the default layout with one provided via bind mount
