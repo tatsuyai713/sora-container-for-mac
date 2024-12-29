@@ -213,6 +213,32 @@ RUN apt install -y debian-keyring debian-archive-keyring apt-transport-https && 
     apt-get install -y caddy && \
     rm -rf /var/lib/apt/lists/*
 
+# Install ROS 2 Humble
+RUN apt-get update && apt-get install -y \
+    curl \
+    gnupg2 \
+    lsb-release && \
+    curl -s https://raw.githubusercontent.com/ros/rosdistro/master/ros.asc | gpg --dearmor > /usr/share/keyrings/ros-archive-keyring.gpg && \
+    echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/ros-archive-keyring.gpg] http://packages.ros.org/ros2/ubuntu $(lsb_release -sc) main" | tee /etc/apt/sources.list.d/ros2.list > /dev/null && \
+    apt-get update && \
+    apt-get install -y \
+    ros-humble-ros-base \
+    ros-dev-tools && \
+    rm -rf /var/lib/apt/lists/*
+
+RUN mkdir -p /ros2_ws/src
+WORKDIR /ros2_ws
+RUN git clone https://github.com/tatsuyai713/rws.git -b feature-humble-fastdds src/rws
+RUN git clone https://github.com/tatsuyai713/ros2-websocket-proxy.git -b feature-humble-container src/ros2-websocket-proxy
+RUN mkdir -p /ros2_ws/config
+
+RUN apt-get update && \
+    apt-get install -y \
+    libwebsocketpp-dev libasio-dev && \
+    rm -rf /var/lib/apt/lists/*
+    
+RUN . /opt/ros/humble/setup.sh && colcon build --symlink-install
+
 WORKDIR /app
 COPY --from=build /src/sora/web/.webpack ./
 

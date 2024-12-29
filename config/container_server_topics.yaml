@@ -1,0 +1,11 @@
+# config/topics.yaml
+publish_topics:
+  - name: "/another_topic"
+    type: "sensor_msgs/msg/Image"
+  - name: "/another_topic1"
+    type: "sensor_msgs/msg/Image"
+  - name: "/another_topic2"
+    type: "sensor_msgs/msg/Image"
+subscribe_topics:
+  - name: "/test"
+    type: "std_msgs/msg/Float64"

@@ -39,6 +39,9 @@ DOCKER_OPT="${DOCKER_OPT} \
 	--tmpfs /dev/shm:rw \
 	-p 3$(id -u):8088 \
 	-p 4$(id -u):80 \
+	-p 9090:9090 \
+	-p 9091:9091 \
+    --volume=./config:/ros2_ws/install/ros2_websocket_proxy/share/ros2_websocket_proxy/config:rw \
 	--hostname Docker-$(hostname) \
 	--add-host Docker-$(hostname):127.0.1.1"
 
