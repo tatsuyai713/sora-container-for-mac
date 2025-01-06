@@ -1,0 +1,32 @@
+version: '3.8'
+
+services:
+  sora:
+    image: sora-container-for-${USER}:latest
+    container_name: sora-for-${USER}
+    environment:
+      TERM: xterm-256color
+      PASSWD: ${PASSWORD}
+      SSL_ENABLE: ${SSL_ENABLE}
+      CERT_PATH: /home/${USER}/ssl/
+    volumes:
+      - /Users/${USER}:/home/${USER}/host_home:rw
+      - ./config:/ros2_ws/install/ros2_websocket_proxy/share/ros2_websocket_proxy/config:rw
+    ports:
+      - "30000:8088"
+      - "40000:80"
+      - "9090:9090"
+      - "9091:9091"
+      - "9229:9229"
+    working_dir: /home/${USER}
+    user: "${USER_ID}"
+    shm_size: '4096m'
+    tmpfs:
+      - /dev/shm:rw
+    hostname: Docker-${HOSTNAME}
+    extra_hosts:
+      - "Docker-${HOSTNAME}:127.0.1.1"
+    entrypoint: /usr/bin/supervisord
+    stdin_open: true
+    tty: true
+    restart: unless-stopped
